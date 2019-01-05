@@ -2050,6 +2050,10 @@ void FLevelLocals::Tick ()
 
 void FLevelLocals::Mark()
 {
+	for (auto &c : CorpseQueue)
+	{
+		GC::Mark(c);
+	}
 	for (auto &s : sectorPortals)
 	{
 		GC::Mark(s.mSkybox);

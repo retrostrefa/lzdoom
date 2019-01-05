@@ -199,6 +199,9 @@ struct FLevelLocals : public FLevelData
 
 	FDynamicLight *lights;
 
+	// links to global game objects
+	TArray<TObjPtr<AActor *>> CorpseQueue;
+
 	bool		IsJumpingAllowed() const;
 	bool		IsCrouchingAllowed() const;
 	bool		IsFreelookAllowed() const;
