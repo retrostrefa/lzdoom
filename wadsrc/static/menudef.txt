@@ -1371,10 +1371,10 @@ OptionMenu "CompatibilityOptions"
 {
 	Title "$CMPTMNU_TITLE"
 	Option "$CMPTMNU_MODE",							"compatmode", "CompatModes", "", 1
-	
+
 	StaticText " "
 	StaticText "$CMPTMNU_ACTORBEHAVIOR",1
-	Option "$CMPTMNU_CORPSEGIBS",					"compat_CORPSEGIBS", "YesNo"	
+	Option "$CMPTMNU_CORPSEGIBS",					"compat_CORPSEGIBS", "YesNo"
 	Option "$CMPTMNU_NOBLOCKFRIENDS",				"compat_NOBLOCKFRIENDS", "YesNo"
 	Option "$CMPTMNU_LIMITPAIN",					"compat_LIMITPAIN", "YesNo"
 	Option "$CMPTMNU_MBFMONSTERMOVE",				"compat_MBFMONSTERMOVE", "YesNo"
@@ -1383,12 +1383,12 @@ OptionMenu "CompatibilityOptions"
 	Option "$CMPTMNU_INVISIBILITY",					"compat_INVISIBILITY", "YesNo"
 	Option "$CMPTMNU_MINOTAUR",						"compat_MINOTAUR", "YesNo"
 	Option "$CMPTMNU_NOTOSSDROPS",					"compat_NOTOSSDROPS", "YesNo"
-	
+
 	StaticText " "
 	StaticText "$CMPTMNU_DEHACKEDBEHAVIOR",1
 	Option "$CMPTMNU_DEHHEALTH",					"compat_DEHHEALTH", "YesNo"
 	Option "$CMPTMNU_MUSHROOM",						"compat_MUSHROOM", "YesNo"
-	
+
 	StaticText " "
 	StaticText "$CMPTMNU_MAPACTIONBEHAVIOR",1
 	Option "$CMPTMNU_USEBLOCKING",					"compat_USEBLOCKING", "YesNo"
@@ -1402,7 +1402,8 @@ OptionMenu "CompatibilityOptions"
 	Option "$CMPTMNU_MULTIEXIT",					"compat_multiexit", "YesNo"
 	Option "$CMPTMNU_TELEPORT",						"compat_teleport", "YesNo"
 	Option "$CMPTMNU_PUSHWINDOW",					"compat_pushwindow", "YesNo"
-	
+	Option "$CMPTMNU_CHECKSWITCHRANGE",				"compat_checkswitchrange", "YesNo"
+
 	StaticText " "
 	StaticText "$CMPTMNU_PHYSICSBEHAVIOR",1
 	Option "$CMPTMNU_NOPASSOVER",					"compat_nopassover", "YesNo"
@@ -1414,13 +1415,13 @@ OptionMenu "CompatibilityOptions"
 	Option "$CMPTMNU_HITSCAN",						"compat_HITSCAN", "YesNo"
 	Option "$CMPTMNU_MISSILECLIP",					"compat_MISSILECLIP", "YesNo"
 
-	
+
 	StaticText " "
 	StaticText "$CMPTMNU_RENDERINGBEHAVIOR",1
 	Option "$CMPTMNU_POLYOBJ",						"compat_POLYOBJ", "YesNo"
 	Option "$CMPTMNU_MASKEDMIDTEX",					"compat_MASKEDMIDTEX", "YesNo"
 	Option "$CMPTMNU_SPRITESORT",					"compat_SPRITESORT", "YesNo"
-	
+
 	StaticText " "
 	StaticText "$CMPTMNU_SOUNDBEHAVIOR",1
 	Option "$CMPTMNU_SOUNDSLOTS",					"compat_soundslots", "YesNo"
@@ -1429,7 +1430,7 @@ OptionMenu "CompatibilityOptions"
 	Option "$CMPTMNU_SECTORSOUNDS",					"compat_SECTORSOUNDS", "YesNo"
 	Option "$CMPTMNU_SOUNDCUTOFF",					"compat_soundcutoff", "YesNo"
 	Option "$CMPTMNU_SOUNDTARGET",					"compat_SOUNDTARGET", "YesNo"
-	
+
 	Class "CompatibilityMenu"
 }
 
