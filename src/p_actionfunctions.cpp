@@ -1410,6 +1410,7 @@ enum
 	XF_HURTSOURCE =		1,
 	XF_NOTMISSILE =		4,
 	XF_NOACTORTYPE =	1 << 3,
+	XF_THRUSTZ =		32,
 };
 
 DEFINE_ACTION_FUNCTION_PARAMS(AActor, A_Explode)
@@ -1458,6 +1459,7 @@ DEFINE_ACTION_FUNCTION_PARAMS(AActor, A_Explode)
 	int pflags = 0;
 	if (flags & XF_HURTSOURCE)	pflags |= RADF_HURTSOURCE;
 	if (flags & XF_NOTMISSILE)	pflags |= RADF_SOURCEISSPOT;
+	if (flags & XF_THRUSTZ)	pflags |= RADF_THRUSTZ;
 
 	int count = P_RadiusAttack (self, self->target, damage, distance, damagetype, pflags, fulldmgdistance);
 	P_CheckSplash(self, distance);
