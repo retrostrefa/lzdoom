@@ -971,3 +971,9 @@ CCMD(reset2saved)
 	GameConfig->DoModSetup (gameinfo.ConfigName);
 	R_SetViewSize (screenblocks);
 }
+
+CCMD(resetb2defaults)
+{
+	C_SetDefaultBindings ();
+}
+

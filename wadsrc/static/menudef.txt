@@ -492,6 +492,8 @@ OptionMenu "CustomizeControls"
 	Control 	"$CNTRLMNU_MISSION",				"showpop 1"
 	Control 	"$CNTRLMNU_KEYS",					"showpop 2"
 	Control 	"$CNTRLMNU_STATS",					"showpop 3"
+	StaticText " "
+	SafeCommand "$OPTMNU_DEFAULTS",	"resetb2defaults"
 }
 
 //-------------------------------------------------------------------------------------------
