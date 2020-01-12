@@ -337,7 +337,7 @@ SystemFrameBuffer::SystemFrameBuffer (void *, int width, int height, int, int, b
 	}
 
 	FString caption;
-	caption.Format(GAMESIG " %s (%s)", GetVersionString(), GetGitTime());
+	caption.Format(GAMENAME " %s (%s)", GetVersionString(), GetGitTime());
 
 	for ( ; glvers[glveridx][0] > 0; ++glveridx)
 	{
@@ -466,7 +466,7 @@ void I_SetWindowTitle(const char* caption)
 	else
 	{
 		FString default_caption;
-		default_caption.Format(GAMESIG " %s (%s)", GetVersionString(), GetGitTime());
+		default_caption.Format(GAMENAME " %s (%s)", GetVersionString(), GetGitTime());
 		SDL_SetWindowTitle(window, default_caption);
 	}
 }
