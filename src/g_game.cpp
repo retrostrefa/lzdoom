@@ -2588,6 +2588,7 @@ bool G_ProcessIFFDemo (FString &mapname)
 			if (mapname[0] != 0)
 			{
 				FRandom::StaticClearRandom ();
+				M_ClearRandom();
 			}
 			consoleplayer = *demo_p++;
 			break;
