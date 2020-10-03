@@ -135,10 +135,7 @@ DEFINE_FIELD(DPSprite, px)
 DEFINE_FIELD(DPSprite, py)
 DEFINE_FIELD(DPSprite, scalex)
 DEFINE_FIELD(DPSprite, scaley)
-DEFINE_FIELD(DPSprite, oldscalex)
-DEFINE_FIELD(DPSprite, oldscaley)
 DEFINE_FIELD(DPSprite, rotation)
-DEFINE_FIELD(DPSprite, oldrotation)
 DEFINE_FIELD_NAMED(DPSprite, Coord[0], Coord0)
 DEFINE_FIELD_NAMED(DPSprite, Coord[1], Coord1)
 DEFINE_FIELD_NAMED(DPSprite, Coord[2], Coord2)
@@ -148,6 +145,7 @@ DEFINE_FIELD(DPSprite, Tics)
 DEFINE_FIELD(DPSprite, HAlign)
 DEFINE_FIELD(DPSprite, VAlign)
 DEFINE_FIELD(DPSprite, alpha)
+DEFINE_FIELD(DPSprite, InterpolateTic)
 DEFINE_FIELD_BIT(DPSprite, Flags, bAddWeapon, PSPF_ADDWEAPON)
 DEFINE_FIELD_BIT(DPSprite, Flags, bAddBob, PSPF_ADDBOB)
 DEFINE_FIELD_BIT(DPSprite, Flags, bPowDouble, PSPF_POWDOUBLE)
@@ -156,6 +154,7 @@ DEFINE_FIELD_BIT(DPSprite, Flags, bFlip, PSPF_FLIP)
 DEFINE_FIELD_BIT(DPSprite, Flags, bMirror, PSPF_MIRROR)
 DEFINE_FIELD_BIT(DPSprite, Flags, bPlayerTranslated, PSPF_PLAYERTRANSLATED)
 DEFINE_FIELD_BIT(DPSprite, Flags, bPivotPercent, PSPF_PIVOTPERCENT)
+DEFINE_FIELD_BIT(DPSprite, Flags, bInterpolate, PSPF_INTERPOLATE)
 
 //------------------------------------------------------------------------
 //
@@ -179,15 +178,16 @@ DPSprite::DPSprite(player_t *owner, AActor *caller, int id)
   scalex(1.0), scaley(1.0),
   px(.0), py(.0),
   rotation(.0),
-  oldscalex(.0), oldscaley(.0),
-  oldrotation(.0),
-  PivotPercent(true),
   HAlign(0),
-  VAlign(0)
+  VAlign(0),
+  InterpolateTic(false)
 {
 	for (int i = 0; i < 4; i++)
-		Coord[i] = DVector2(0,0);
-
+	{
+		Coord[i] = DVector2(0, 0);
+		Prev.v[i] = Vert.v[i] = FVector2(0,0);
+	}
+	
 	alpha = 1;
 	Renderstyle = STYLE_Normal;
 
@@ -699,8 +699,10 @@ DEFINE_ACTION_FUNCTION(AActor, A_OverlayVertexOffset)
 	if (pspr == nullptr)
 		return 0;
 
-	if (!(flags & WOF_KEEPX))	pspr->Coord[index].X = x;
-	if (!(flags & WOF_KEEPY))	pspr->Coord[index].Y = y;
+	if (!(flags & WOF_KEEPX))	pspr->Coord[index].X = (flags & WOF_ADD) ? pspr->Coord[index].X + x : x;
+	if (!(flags & WOF_KEEPY))	pspr->Coord[index].Y = (flags & WOF_ADD) ? pspr->Coord[index].Y + y : y;
+
+	if (flags & WOF_INTERPOLATE)	pspr->InterpolateTic = true;
 
 	return 0;
 }
@@ -730,16 +732,10 @@ DEFINE_ACTION_FUNCTION(AActor, A_OverlayScale)
 	if (!(flags & WOF_ZEROY) && wy == 0.0)
 		wy = wx;
 
-	if (!(flags & WOF_KEEPX))
-		pspr->scalex = (flags & WOF_ADD) ? pspr->scalex + wx : wx;
-	if (!(flags & WOF_KEEPY))
-		pspr->scaley = (flags & WOF_ADD) ? pspr->scaley + wy : wy;
+	if (!(flags & WOF_KEEPX))	pspr->scalex = (flags & WOF_ADD) ? pspr->scalex + wx : wx;
+	if (!(flags & WOF_KEEPY))	pspr->scaley = (flags & WOF_ADD) ? pspr->scaley + wy : wy;
 
-	if (!(flags & WOF_INTERPOLATE))
-	{
-		pspr->oldscalex = pspr->scalex;
-		pspr->oldscaley = pspr->scaley;
-	}
+	if (flags & WOF_INTERPOLATE)	pspr->InterpolateTic = true;
 
 	return 0;
 }
@@ -762,13 +758,11 @@ DEFINE_ACTION_FUNCTION(AActor, A_OverlayRotate)
 
 	DPSprite *pspr = self->player->FindPSprite(((layer != 0) ? layer : stateinfo->mPSPIndex));
 
-	if (pspr == nullptr)
-		return 0;
-
-	pspr->rotation = (flags & WOF_ADD) ? pspr->rotation + degrees : degrees;
-	
-	if (!(flags & WOF_INTERPOLATE))
-		pspr->oldrotation = degrees;
+	if (pspr != nullptr)
+	{
+		pspr->rotation = (flags & WOF_ADD) ? pspr->rotation + degrees : degrees;
+		if (flags & WOF_INTERPOLATE)	pspr->InterpolateTic = true;
+	}
 
 	return 0;
 }
@@ -804,10 +798,10 @@ DEFINE_ACTION_FUNCTION(AActor, A_OverlayPivot)
 		wx = nx; wy = ny;
 	}
 
-	if (!(flags & WOF_KEEPX))
-		pspr->px = (flags & WOF_ADD) ? pspr->px + wx : wx;
-	if (!(flags & WOF_KEEPY))
-		pspr->py = (flags & WOF_ADD) ? pspr->py + wy : wy;
+	if (!(flags & WOF_KEEPX))	pspr->px = (flags & WOF_ADD) ? pspr->px + wx : wx;
+	if (!(flags & WOF_KEEPY))	pspr->py = (flags & WOF_ADD) ? pspr->py + wy : wy;
+
+	if (flags & WOF_INTERPOLATE)	pspr->InterpolateTic = true;
 
 	return 0;
 }
@@ -844,30 +838,17 @@ void A_OverlayOffset(AActor *self, int layer, double wx, double wy, int flags)
 			wx = nx; wy = ny;
 		}
 
-		if (!(flags & WOF_KEEPX))
+		if (!(flags & WOF_KEEPX))		psp->x = (flags & WOF_ADD) ? psp->x + wx : wx;
+		if (!(flags & WOF_KEEPY))		psp->y = (flags & WOF_ADD) ? psp->y + wy : wy;
+		
+		if (flags & WOF_INTERPOLATE)	psp->InterpolateTic = true;
+		/*
+		if (!(flags & (WOF_INTERPOLATE|WOF_ADD))) 
 		{
-			if (flags & WOF_ADD)
-			{
-				psp->x += wx;
-			}
-			else
-			{
-				psp->x = wx;
-				if (!(flags & WOF_INTERPOLATE)) psp->oldx = psp->x;
-			}
+			psp->oldx = psp->x;
+			psp->oldy = psp->y;
 		}
-		if (!(flags & WOF_KEEPY))
-		{
-			if (flags & WOF_ADD)
-			{
-				psp->y += wy;
-			}
-			else
-			{
-				psp->y = wy;
-				if (!(flags & WOF_INTERPOLATE)) psp->oldy = psp->y;
-			}
-		}
+		*/
 	}
 }
 
@@ -916,8 +897,14 @@ DEFINE_ACTION_FUNCTION(AActor, A_OverlayFlags)
 	if (set)
 		pspr->Flags |= flags;
 	else
+	{
 		pspr->Flags &= ~flags;
 
+		// This is the only way to shut off the temporary interpolation tic
+		// in the event another mod is causing potential interference
+		if (flags & PSPF_INTERPOLATE)
+			pspr->ResetInterpolation();
+	}
 	return 0;
 }
 
@@ -1230,10 +1217,7 @@ void DPSprite::Serialize(FSerializer &arc)
 		("py", py)
 		("scalex", scalex)
 		("scaley", scaley)
-		("oldscalex", oldscalex)
-		("oldscaley", oldscaley)
 		("rotation", rotation)
-		("oldrotation", oldrotation)
 		("halign", HAlign)
 		("valign", VAlign)
 		("renderstyle_", Renderstyle);	// The underscore is intentional to avoid problems with old savegames which had this as an ERenderStyle (which is not future proof.)

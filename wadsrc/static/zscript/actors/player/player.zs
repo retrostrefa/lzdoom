@@ -2596,17 +2596,15 @@ class PSprite : Object native play
 	native double py;
 	native double scalex;
 	native double scaley;
-	native double oldscalex;
-	native double oldscaley;
 	native double rotation;
-	native double oldrotation;
 	native int HAlign, VAlign;
-	native Vector2 Coord0;
+	native Vector2 Coord0;		// [MC] Not the actual coordinates. Just the offsets by A_OverlayVertexOffset.
 	native Vector2 Coord1;
 	native Vector2 Coord2;
 	native Vector2 Coord3;
 	native double alpha;
 	native Bool firstTic;
+	native bool InterpolateTic;
 	native int Tics;
 	native bool bAddWeapon;
 	native bool bAddBob;
@@ -2616,6 +2614,7 @@ class PSprite : Object native play
 	native bool bMirror;
 	native bool bPlayerTranslated;
 	native bool bPivotPercent;
+	native bool bInterpolate;
 
 	native void SetState(State newstate, bool pending = false);
 
