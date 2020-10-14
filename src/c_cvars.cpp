@@ -1699,7 +1699,13 @@ CCMD (resetcvar)
 	{
 		FBaseCVar *var = FindCVar (argv[1], NULL);
 		if (var != NULL)
+		{
 			var->ResetToDefault();
+		}
+		else
+		{
+			Printf ("No such variable: %s\n", argv[1]);
+		}
 	}
 }
 
