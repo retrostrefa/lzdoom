@@ -183,6 +183,7 @@ struct gameinfo_t
 	FName mFontColorHighlight;
 	FName mFontColorSelection;
 	FName mSliderColor;
+	FName mSliderBackColor;
 	FString mBackButton;
 	double gibfactor;
 	int TextScreenX;
