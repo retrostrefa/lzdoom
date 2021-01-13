@@ -75,6 +75,7 @@ void FMapInfoParser::ParseSkill ()
 	skill.RespawnLimit = 0;
 	skill.Aggressiveness = 1.;
 	skill.SpawnFilter = 0;
+	skill.InstantReaction = false;
 	skill.ACSReturn = 0;
 	skill.MustConfirm = false;
 	skill.Shortcut = 0;
@@ -175,6 +176,10 @@ void FMapInfoParser::ParseSkill ()
 				else if (sc.Compare("hard")) skill.SpawnFilter |= 8;
 				else if (sc.Compare("nightmare")) skill.SpawnFilter |= 16;
 			}
+		}
+		else if (sc.Compare ("InstantReaction"))
+		{
+			skill.InstantReaction = true;
 		}
 		else if (sc.Compare("ACSReturn"))
 		{
@@ -383,6 +388,9 @@ int G_SkillProperty(ESkillProperty prop)
 			if (AllSkills[gameskill].Infighting == LEVEL2_TOTALINFIGHTING) return 1;
 			if (AllSkills[gameskill].Infighting == LEVEL2_NOINFIGHTING) return -1;
 			return infighting;
+
+		case SKILLP_InstantReaction:
+			return AllSkills[gameskill].InstantReaction;
 		}
 	}
 	return 0;
@@ -496,6 +504,7 @@ FSkillInfo &FSkillInfo::operator=(const FSkillInfo &other)
 	RespawnLimit= other.RespawnLimit;
 	Aggressiveness= other.Aggressiveness;
 	SpawnFilter = other.SpawnFilter;
+	InstantReaction = other.InstantReaction;
 	ACSReturn = other.ACSReturn;
 	MenuName = other.MenuName;
 	PicName = other.PicName;
