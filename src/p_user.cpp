@@ -418,6 +418,7 @@ void player_t::CopyFrom(player_t &p, bool copyPSP)
 	ConversationFaceTalker = p.ConversationFaceTalker;
 	MUSINFOactor = p.MUSINFOactor;
 	MUSINFOtics = p.MUSINFOtics;
+	SoundClass = p.SoundClass;
 	if (copyPSP)
 	{
 		// This needs to transfer ownership completely.
@@ -1770,7 +1771,8 @@ void player_t::Serialize(FSerializer &arc)
 		("settings_controller", settings_controller)
 		("onground", onground)
 		("musinfoactor", MUSINFOactor)
-		("musinfotics", MUSINFOtics);
+		("musinfotics", MUSINFOtics)
+		("SoundClass", SoundClass);
 
 	if (arc.isWriting ())
 	{
@@ -1886,6 +1888,7 @@ DEFINE_FIELD_X(PlayerInfo, player_t, original_cmd)
 DEFINE_FIELD_X(PlayerInfo, player_t, userinfo)
 DEFINE_FIELD_X(PlayerInfo, player_t, weapons)
 DEFINE_FIELD_NAMED_X(PlayerInfo, player_t, cmd.ucmd.buttons, buttons)
+DEFINE_FIELD_X(PlayerInfo, player_t, SoundClass)
 
 DEFINE_FIELD_X(UserCmd, usercmd_t, buttons)
 DEFINE_FIELD_X(UserCmd, usercmd_t, pitch)
