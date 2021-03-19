@@ -177,7 +177,7 @@ void InterceptDefaultAim(AActor *mobj, AActor *targ, DVector3 aim, double speed)
 
 // [MC] Was part of P_Thing_Projectile, now its own function for use in ZScript.
 // Aims mobj at targ based on speed and targ's velocity.
-static void VelIntercept(AActor *targ, AActor *mobj, double speed, bool aimpitch = false, bool oldvel = false, bool leadtarget = true)
+static void VelIntercept(AActor *targ, AActor *mobj, double speed, bool aimpitch = false, bool oldvel = false, bool resetvel = false, bool leadtarget = true)
 {
 	if (targ == nullptr || mobj == nullptr)	return;
 
@@ -205,7 +205,7 @@ static void VelIntercept(AActor *targ, AActor *mobj, double speed, bool aimpitch
 			if (targ->Vel.X == 0 && targ->Vel.Y == 0)
 			{
 				InterceptDefaultAim(mobj, targ, aim, speed);
-				if (oldvel)
+				if (resetvel)
 				{
 					mobj->Vel = prevel;
 				}
@@ -231,6 +231,10 @@ static void VelIntercept(AActor *targ, AActor *mobj, double speed, bool aimpitch
 		// And make the projectile follow that vector at the desired speed.
 		mobj->Vel = aimvec * (speed / dist);
 		mobj->AngleFromVel();
+		if (oldvel)
+		{
+			mobj->Vel = prevel;
+		}
 		if (aimpitch) // [MC] Ripped right out of A_FaceMovementDirection
 		{
 			const DVector2 velocity = mobj->Vel.XY();
@@ -241,7 +245,7 @@ static void VelIntercept(AActor *targ, AActor *mobj, double speed, bool aimpitch
 	{
 		InterceptDefaultAim(mobj, targ, aim, speed);
 	}
-	if (oldvel)
+	if (resetvel)
 	{
 		mobj->Vel = prevel;
 	}
@@ -254,8 +258,9 @@ DEFINE_ACTION_FUNCTION(AActor, VelIntercept)
 	PARAM_FLOAT(speed);
 	PARAM_BOOL(aimpitch);
 	PARAM_BOOL(oldvel);
+	PARAM_BOOL(resetvel);
 	if (speed < 0)	speed = self->Speed;
-	VelIntercept(targ, self, speed, aimpitch, oldvel);
+	VelIntercept(targ, self, speed, aimpitch, oldvel, resetvel);
 	return 0;
 }
 
@@ -341,7 +346,7 @@ bool P_Thing_Projectile (int tid, AActor *source, int type, const char *type_nam
 
 					if (targ != nullptr)
 					{
-						VelIntercept(targ, mobj, speed, false, false, leadTarget);
+						VelIntercept(targ, mobj, speed, false, false, false, leadTarget);
 
 						if (mobj->flags2 & MF2_SEEKERMISSILE)
 						{
