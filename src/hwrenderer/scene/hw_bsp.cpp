@@ -40,6 +40,8 @@
 #include "hwrenderer/data/flatvertices.h"
 
 
+EXTERN_CVAR(Float, r_actorspriteshadowdist)
+
 EXTERN_CVAR(Bool, gl_render_segs)
 
 CVAR(Bool, gl_render_things, true, 0)
@@ -373,6 +375,18 @@ void HWDrawInfo::RenderThings(subsector_t * sub, sector_t * sector)
 		if (CurrentMapSections[thing->subsector->mapsection])
 		{
 			GLSprite sprite;
+
+			// [Nash] draw sprite shadow
+			if (R_ShouldDrawSpriteShadow(thing))
+			{
+				double dist = (thing->Pos() - vp.Pos).LengthSquared();
+				double check = r_actorspriteshadowdist;
+				if (dist <= check * check)
+				{
+					sprite.Process(this, thing, sector, in_area, false, true);
+				}
+			}
+
 			sprite.Process(this, thing, sector, in_area, false);
 		}
 	}
@@ -392,6 +406,18 @@ void HWDrawInfo::RenderThings(subsector_t * sub, sector_t * sector)
 		}
 
 		GLSprite sprite;
+
+		// [Nash] draw sprite shadow
+		if (R_ShouldDrawSpriteShadow(thing))
+		{
+			double dist = (thing->Pos() - vp.Pos).LengthSquared();
+			double check = r_actorspriteshadowdist;
+			if (dist <= check * check)
+			{
+				sprite.Process(this, thing, sector, in_area, true, true);
+			}
+		}
+
 		sprite.Process(this, thing, sector, in_area, true);
 	}
 	SetupSprite.Unclock();
