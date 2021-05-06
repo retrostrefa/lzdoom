@@ -94,7 +94,7 @@ static FRandom pr_crailgun ("CustomRailgun");
 static FRandom pr_spawndebris ("SpawnDebris");
 static FRandom pr_spawnitemex ("SpawnItemEx");
 static FRandom pr_burst ("Burst");
-static FRandom pr_monsterrefire ("MonsterRefire");
+static FRandom pr_monsterrefire ("MonsterRefire", true);
 static FRandom pr_teleport("A_Teleport");
 static FRandom pr_bfgselfdamage("BFGSelfDamage");
 

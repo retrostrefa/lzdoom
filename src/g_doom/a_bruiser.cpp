@@ -1,4 +1,4 @@
-static FRandom pr_bruisattack ("BruisAttack");
+static FRandom pr_bruisattack ("BruisAttack", true);
 
 
 DEFINE_ACTION_FUNCTION(AActor, A_BruisAttack)
