@@ -261,13 +261,13 @@ bool P_ChangeSwitchTexture (side_t *side, int useAgain, BYTE special, bool *ques
 	{
 		texture = side_t::top;
 	}
+	else if ((Switch = TexMan.FindSwitch(side->GetTexture(side_t::mid))) != NULL)
+	{
+		texture = side_t::mid;
+	}
 	else if ((Switch = TexMan.FindSwitch (side->GetTexture(side_t::bottom))) != NULL)
 	{
 		texture = side_t::bottom;
-	}
-	else if ((Switch = TexMan.FindSwitch (side->GetTexture(side_t::mid))) != NULL)
-	{
-		texture = side_t::mid;
 	}
 	else
 	{
