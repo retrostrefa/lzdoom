@@ -768,7 +768,7 @@ void AActor::AttachLight(unsigned int count, const FLightDefaults *lightdef)
 		AttachedLights.Push(light);
 	}
 	lightdef->ApplyProperties(light);
-	light->Pos = Pos();
+	light->UpdateLocation();
 }
 
 //==========================================================================
