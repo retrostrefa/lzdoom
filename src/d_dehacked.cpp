@@ -2028,7 +2028,7 @@ static int PatchPars (int dummy)
 		{
 			while ('\0' != *str)
 			{
-				if (isspace((unsigned char)*str))
+				if (*str != '\r' && isspace((unsigned char)*str))
 				{
 					return str;
 				}
