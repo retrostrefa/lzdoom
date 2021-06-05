@@ -94,7 +94,7 @@ EXTERN_CVAR (Int,  cl_rockettrails)
 
 // PRIVATE DATA DEFINITIONS ------------------------------------------------
 
-static FRandom pr_explodemissile ("ExplodeMissile");
+static FRandom pr_explodemissile ("ExplodeMissile", true);
 FRandom pr_bounce ("Bounce");
 static FRandom pr_reflect ("Reflect");
 static FRandom pr_nightmarerespawn ("NightmareRespawn");
@@ -107,7 +107,7 @@ static FRandom pr_takedamage ("TakeDamage");
 static FRandom pr_splat ("FAxeSplatter");
 static FRandom pr_ripperblood ("RipperBlood");
 static FRandom pr_chunk ("Chunk");
-static FRandom pr_checkmissilespawn ("CheckMissileSpawn");
+static FRandom pr_checkmissilespawn ("CheckMissileSpawn", true);
 static FRandom pr_spawnmissile ("SpawnMissile");
 static FRandom pr_missiledamage ("MissileDamage", true);
 static FRandom pr_multiclasschoice ("MultiClassChoice");
