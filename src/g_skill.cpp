@@ -74,6 +74,7 @@ void FMapInfoParser::ParseSkill ()
 	skill.RespawnCounter = 0;
 	skill.RespawnLimit = 0;
 	skill.Aggressiveness = 1.;
+	skill.DoubleSpawn = false;
 	skill.SpawnFilter = 0;
 	skill.InstantReaction = false;
 	skill.ACSReturn = 0;
@@ -159,6 +160,10 @@ void FMapInfoParser::ParseSkill ()
 			ParseAssign();
 			sc.MustGetFloat ();
 			skill.Aggressiveness = 1. - clamp(sc.Float, 0.,1.);
+		}
+		else if (sc.Compare ("doublespawn"))
+		{
+			skill.DoubleSpawn = true;
 		}
 		else if (sc.Compare("SpawnFilter"))
 		{
@@ -391,6 +396,9 @@ int G_SkillProperty(ESkillProperty prop)
 
 		case SKILLP_InstantReaction:
 			return AllSkills[gameskill].InstantReaction;
+
+		case SKILLP_DoubleSpawn:
+			return AllSkills[gameskill].DoubleSpawn;
 		}
 	}
 	return 0;
@@ -503,6 +511,7 @@ FSkillInfo &FSkillInfo::operator=(const FSkillInfo &other)
 	RespawnCounter= other.RespawnCounter;
 	RespawnLimit= other.RespawnLimit;
 	Aggressiveness= other.Aggressiveness;
+	DoubleSpawn = other.DoubleSpawn;
 	SpawnFilter = other.SpawnFilter;
 	InstantReaction = other.InstantReaction;
 	ACSReturn = other.ACSReturn;
@@ -521,6 +530,7 @@ FSkillInfo &FSkillInfo::operator=(const FSkillInfo &other)
 	Infighting = other.Infighting;
 	ArmorFactor = other.ArmorFactor;
 	HealthFactor = other.HealthFactor;
+
 	return *this;
 }
 
