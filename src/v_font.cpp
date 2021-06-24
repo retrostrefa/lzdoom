@@ -1205,7 +1205,11 @@ FFont::FFont (const char *name, const char *nametemplate, const char *filetempla
 		}
 	}
 	
-	
+	if (FixedWidth > 0)
+	{
+		FontName = FName("badfont"); // hack
+	}
+
 	if (nametemplate != nullptr)
 	{
 		for (i = 0; i < lcount; i++)
@@ -3642,6 +3646,10 @@ void V_InitFonts()
 	{
 		ConFont = SmallFont;
 	}
+
+	if (ConFont->GetName() == FName("badfont"))
+		ConFont = SmallFont;
+
 	if (!(IntermissionFont = FFont::FindFont("IntermissionFont")))
 	{
 		if (gameinfo.gametype & GAME_DoomChex)
