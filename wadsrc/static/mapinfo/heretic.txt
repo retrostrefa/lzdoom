@@ -293,17 +293,6 @@ skill hard
 	Name = "$MNU_SMITE"
 }
 
-skill extreme_zd32
-{
-	DoubleSpawn
-	DamageFactor = 1.5
-	MonsterHealth = 0.6
-	HealthFactor = 0.6
-	DisableCheats
-	SpawnFilter = Hard
-	Name = "$MNU_EXTREME"
-}
-
 skill nightmare
 {
 	AmmoFactor = 1.5
@@ -313,6 +302,17 @@ skill nightmare
 	DisableCheats
 	SpawnFilter = Nightmare
 	Name = "$MNU_BLACKPLAGUE"
+}
+
+skill extreme_zd32
+{
+	DoubleSpawn
+	DamageFactor = 1.5
+	MonsterHealth = 0.6
+	HealthFactor = 0.6
+	DisableCheats
+	SpawnFilter = Hard
+	Name = "$MNU_EXTREME"
 }
 
 clearepisodes
