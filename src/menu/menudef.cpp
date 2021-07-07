@@ -53,6 +53,8 @@
 
 #include "optionmenuitems.h"
 
+CVAR(Bool, menu_hideextreme, false, CVAR_ARCHIVE)
+
 void ClearSaveGames();
 
 MenuDescriptorList MenuDescriptors;
@@ -1492,6 +1494,10 @@ void M_StartupSkillMenu(FGameStartup *gs)
 			{
 				FSkillInfo &skill = AllSkills[i];
 				FListMenuItem *li;
+
+				if (menu_hideextreme && skill.Name == FName("extreme_zd32"))
+					continue;
+
 				// Using a different name for skills that must be confirmed makes handling this easier.
 				FName action = (skill.MustConfirm && !AllEpisodes[gs->Episode].mNoSkill) ?
 					NAME_StartgameConfirm : NAME_Startgame;
@@ -1523,6 +1529,10 @@ void M_StartupSkillMenu(FGameStartup *gs)
 			else
 			{
 				ld->mAutoselect = -1;
+			}
+			if (static_cast<unsigned int>(ld->mSelectedItem) >= ld->mItems.Size())
+			{
+				ld->mSelectedItem = ld->mItems.Size() - 1;
 			}
 			success = true;
 		}
