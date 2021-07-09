@@ -41,18 +41,18 @@ const char *GetVersionString();
 
 /** Lots of different version numbers **/
 
-#define VERSIONSTR "2.8.5c"
+#define VERSIONSTR "2.8.6"
 #define GLVERSIONSTR "1.9.4"
 
 // The version as seen in the Windows resource
-#define RC_FILEVERSION 2,8,5,3
-#define RC_PRODUCTVERSION 2,8,5,3
-#define RC_PRODUCTVERSION2 "2.8.5c"
+#define RC_FILEVERSION 2,8,6,0
+#define RC_PRODUCTVERSION 2,8,6,0
+#define RC_PRODUCTVERSION2 "2.8.6"
 
 // Version identifier for network games.
 // Bump it every time you do a release unless you're certain you
 // didn't change anything that will affect sync.
-#define NETGAMEVERSION 232
+#define NETGAMEVERSION 233
 
 // Version stored in the ini's [LastRun] section.
 // Bump it if you made some configuration change that you want to
@@ -80,7 +80,7 @@ const char *GetVersionString();
 
 // Use 4500 as the base git save version, since it's higher than the
 // SVN revision ever got.
-#define SAVEVER 4550
+#define SAVEVER 4551
 
 // This is so that derivates can use the same savegame versions without worrying about engine compatibility
 #define GAMESIG "ZDOOM32"
