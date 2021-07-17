@@ -119,7 +119,7 @@ void FStringTable::LoadLanguage (int lumpnum)
 					return;
 				}
 				FString str(sc.String);
-				if (str.Compare("identifier") == 0)
+				if (str.CompareNoCase("identifier") == 0 || str.CompareNoCase("default") == 0)
 				{
 					if (!errordone) Printf("Skipping CSV 'LANGUAGE' lump.\n"); 
 					errordone = true;
