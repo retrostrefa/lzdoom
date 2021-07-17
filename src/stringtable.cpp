@@ -118,6 +118,13 @@ void FStringTable::LoadLanguage (int lumpnum)
 					errordone = true;
 					return;
 				}
+				FString str(sc.String);
+				if (str.Compare("identifier") == 0)
+				{
+					if (!errordone) Printf("Skipping CSV 'LANGUAGE' lump.\n"); 
+					errordone = true;
+					return;
+				}
 				sc.ScriptError ("Found a string without a language specified.");
 			}
 
