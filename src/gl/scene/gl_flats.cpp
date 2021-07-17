@@ -176,7 +176,7 @@ void FDrawInfo::DrawSubsectors(GLFlat *flat, int pass, bool processlights, bool 
 	int dli = flat->dynlightindex;
 
 	gl_RenderState.Apply();
-	if (gl.legacyMode) processlights = false;
+	if (gl.legacyMode || !level.HasDynamicLights) processlights = false;
 	if (flat->vboindex >= 0)
 	{
 		int index = flat->vboindex;
