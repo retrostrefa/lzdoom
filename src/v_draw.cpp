@@ -384,6 +384,13 @@ bool DFrameBuffer::SetTextureParms(DrawParms *parms, FTexture *img, double xx, d
 			parms->destheight = parms->texheight * CleanYfac;
 			break;
 
+		case DTA_CleanTop:
+			parms->x = (parms->x - 160.0) * CleanXfac + (GetWidth() * 0.5);
+			parms->y = (parms->y) * CleanYfac;
+			parms->destwidth = parms->texwidth * CleanXfac;
+			parms->destheight = parms->texheight * CleanYfac;
+			break;
+
 		case DTA_CleanNoMove:
 			parms->destwidth = parms->texwidth * CleanXfac;
 			parms->destheight = parms->texheight * CleanYfac;
@@ -630,6 +637,7 @@ bool DFrameBuffer::ParseDrawTextureTags(FTexture *img, double x, double y, uint3
 			break;
 
 		case DTA_Clean:
+		case DTA_CleanTop:
 			boolval = ListGetInt(tags);
 			if (boolval)
 			{
