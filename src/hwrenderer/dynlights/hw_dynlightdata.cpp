@@ -26,7 +26,7 @@
 **/
 
 #include "actorinlines.h"
-
+#include "hwrenderer/utility/hw_cvars.h"
 #include "hw_dynlightdata.h"
 
 // If we want to share the array to avoid constant allocations it needs to be thread local unless it'd be littered with expensive synchronization.
@@ -104,9 +104,13 @@ void FDynLightData::AddLightToList(int group, FDynamicLight * light)
 		i = 1;
 	}
 
-	float shadowIndex = light->mShadowmapIndex + 1.0f;
-
-    // Store attenuate flag in the sign bit of the float.
+	float shadowIndex;
+	if (gl_light_shadowmap) // note: with gl_light_shadowmap switched off, we cannot rely on properly set indices anymore.
+	{
+		shadowIndex = light->mShadowmapIndex + 1.0f;
+	}
+	else shadowIndex = 1025.f;
+	// Store attenuate flag in the sign bit of the float.
 	if (light->IsAttenuated()) shadowIndex = -shadowIndex;
 
 	float lightType = 0.0f;
