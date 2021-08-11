@@ -103,7 +103,7 @@ bool IShadowMap::ShadowTest(FDynamicLight *light, const DVector3 &pos)
 
 bool IShadowMap::IsEnabled() const
 {
-	return gl_renderbuffers && gl_light_shadowmap && (screen->hwcaps & RFL_SHADER_STORAGE_BUFFER);
+	return gl_renderbuffers && gl_lights && gl_light_shadowmap && (screen->hwcaps & RFL_SHADER_STORAGE_BUFFER);
 }
 
 void IShadowMap::CollectLights()
