@@ -35,6 +35,7 @@
 #include "dthinker.h"
 #include "stats.h"
 #include "p_local.h"
+#include "p_effect.h"
 #include "serializer.h"
 #include "d_player.h"
 #include "vm.h"
@@ -603,6 +604,34 @@ void DThinker::RunThinkers ()
 
 	ThinkCycles.Clock();
 
+	auto recreateLights = [=]()
+	{
+		auto it = TThinkerIterator<AActor>();
+
+		// Set dynamic lights at the end of the tick, so that this catches all changes being made through the last frame.
+		while (auto ac = it.Next())
+		{
+			if (ac->flags8 & MF8_RECREATELIGHTS)
+			{
+				ac->flags8 &= ~MF8_RECREATELIGHTS;
+				ac->SetDynamicLights();
+			}
+			// This was merged from P_RunEffects to eliminate the costly duplicate ThinkerIterator loop.
+			// [RH] Run particle effects
+			if (players[consoleplayer].camera != nullptr && !level.isFrozen())
+			{
+				int pnum = players[consoleplayer].camera->Sector->Index() * level.sectors.Size();
+				if ((ac->effects || ac->fountaincolor))
+				{
+					// Only run the effect if the actor is potentially visible
+					int rnum = pnum + ac->Sector->Index();
+					if (level.rejectmatrix.Size() == 0 || !(level.rejectmatrix[rnum>>3] & (1 << (rnum & 7))))
+						P_RunEffect(ac, ac->effects);
+				}
+			}
+		}
+	};
+
 	if (!profilethinkers)
 	{
 		// Tick every thinker left from last time
@@ -623,6 +652,7 @@ void DThinker::RunThinkers ()
 
 		if (level.lights && level.HasDynamicLights)
 		{
+			recreateLights();
 			for (auto light = level.lights; light;)
 			{
 				auto next = light->next;
@@ -652,6 +682,7 @@ void DThinker::RunThinkers ()
 
 		if (level.lights && level.HasDynamicLights)
 		{
+			recreateLights();
 			// Also profile the internal dynamic lights, even though they are not implemented as thinkers.
 			auto &prof = Profiles[NAME_InternalDynamicLight];
 			prof.timer.Clock();
