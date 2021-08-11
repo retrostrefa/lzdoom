@@ -621,11 +621,14 @@ void DThinker::RunThinkers ()
 			}
 		} while (count != 0);
 
-		for (auto light = level.lights; light;)
+		if (level.lights && level.HasDynamicLights)
 		{
-			auto next = light->next;
-			light->Tick();
-			light = next;
+			for (auto light = level.lights; light;)
+			{
+				auto next = light->next;
+				light->Tick();
+				light = next;
+			}
 		}
 	}
 	else
@@ -647,7 +650,7 @@ void DThinker::RunThinkers ()
 			}
 		} while (count != 0);
 
-		if (level.lights)
+		if (level.lights && level.HasDynamicLights)
 		{
 			// Also profile the internal dynamic lights, even though they are not implemented as thinkers.
 			auto &prof = Profiles[NAME_InternalDynamicLight];
