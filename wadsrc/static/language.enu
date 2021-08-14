@@ -2747,6 +2747,7 @@ DSPLYMNU_GAMMA		= "Gamma correction";
 DSPLYMNU_CONTRAST 	= "Contrast";
 DSPLYMNU_SATURATION = "Saturation";
 DSPLYMNU_HWGAMMA	= "Hardware Gamma";
+DSPLYMNU_FOV		= "Field of view";
 
 // OpenGL Options
 GLMNU_TITLE			= "OpenGL Options";
