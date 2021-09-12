@@ -64,7 +64,7 @@ static UINT FPSLimitTimer;
 
 HANDLE FPSLimitEvent;
 
-CVAR (Int, vid_adapter, 1, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
+CVAR (Int, vid_adapter, 0, CVAR_ARCHIVE | CVAR_GLOBALCONFIG)
 
 
 //==========================================================================
