@@ -184,12 +184,13 @@ void FDrawInfo::RenderTexturedWall(GLWall *wall, int rflags)
 	}
 	gl_RenderState.SetMaterial(wall->gltexture, wall->flags & 3, 0, -1, false);
 
+	if (wall->flags & GLWall::GLWF_CLAMPY && (wall->type == RENDERWALL_M2S || wall->type == RENDERWALL_M2SNF))
+	{
+		gl_RenderState.SetTextureMode(tmode | TM_CLAMPY);
+	}
+
 	if (wall->type == RENDERWALL_M2SNF)
 	{
-		if (wall->flags & GLWall::GLWF_CLAMPY)
-		{
-			if (tmode == TM_MODULATE) gl_RenderState.SetTextureMode(TM_CLAMPY);
-		}
 		mDrawer->SetFog(255, 0, nullptr, false);
 	}
 	if (wall->type != RENDERWALL_COLOR && wall->seg->sidedef != nullptr)
