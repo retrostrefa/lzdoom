@@ -186,7 +186,7 @@ void FDrawInfo::RenderTexturedWall(GLWall *wall, int rflags)
 
 	if (wall->flags & GLWall::GLWF_CLAMPY && (wall->type == RENDERWALL_M2S || wall->type == RENDERWALL_M2SNF))
 	{
-		gl_RenderState.SetTextureMode(tmode | TM_CLAMPY);
+		if (tmode == TM_MODULATE) gl_RenderState.SetTextureMode(TM_CLAMPY);
 	}
 
 	if (wall->type == RENDERWALL_M2SNF)
