@@ -650,8 +650,9 @@ void DThinker::RunThinkers ()
 			}
 		} while (count != 0);
 
-		if (level.lights && level.HasDynamicLights)
+		if (level.lights || (level.flags3 & LEVEL3_LIGHTCREATED))
 		{
+			level.flags3 &= ~LEVEL3_LIGHTCREATED;
 			recreateLights();
 			for (auto light = level.lights; light;)
 			{
@@ -680,8 +681,9 @@ void DThinker::RunThinkers ()
 			}
 		} while (count != 0);
 
-		if (level.lights && level.HasDynamicLights)
+		if (level.lights || (level.flags3 & LEVEL3_LIGHTCREATED))
 		{
+			level.flags3 &= ~LEVEL3_LIGHTCREATED;
 			recreateLights();
 			// Also profile the internal dynamic lights, even though they are not implemented as thinkers.
 			auto &prof = Profiles[NAME_InternalDynamicLight];
