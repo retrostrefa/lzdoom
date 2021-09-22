@@ -604,6 +604,17 @@ void DThinker::RunThinkers ()
 
 	ThinkCycles.Clock();
 
+	bool dolights;
+	if ((gl_lights && vid_rendermode == 4) || (r_dynlights && vid_rendermode != 4))
+	{
+		dolights = level.lights || (level.flags3 & LEVEL3_LIGHTCREATED);
+	}
+	else
+	{
+		dolights = false;
+	}
+	level.flags3 &= ~LEVEL3_LIGHTCREATED;
+
 	auto recreateLights = [=]()
 	{
 		auto it = TThinkerIterator<AActor>();
@@ -650,9 +661,8 @@ void DThinker::RunThinkers ()
 			}
 		} while (count != 0);
 
-		if (level.lights || (level.flags3 & LEVEL3_LIGHTCREATED))
+		if (dolights)
 		{
-			level.flags3 &= ~LEVEL3_LIGHTCREATED;
 			recreateLights();
 			for (auto light = level.lights; light;)
 			{
@@ -681,9 +691,8 @@ void DThinker::RunThinkers ()
 			}
 		} while (count != 0);
 
-		if (level.lights || (level.flags3 & LEVEL3_LIGHTCREATED))
+		if (dolights)
 		{
-			level.flags3 &= ~LEVEL3_LIGHTCREATED;
 			recreateLights();
 			// Also profile the internal dynamic lights, even though they are not implemented as thinkers.
 			auto &prof = Profiles[NAME_InternalDynamicLight];
