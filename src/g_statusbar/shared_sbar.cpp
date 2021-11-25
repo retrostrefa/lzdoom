@@ -1571,7 +1571,7 @@ void DBaseStatusBar::DrawString(FFont *font, const FString &cstring, double x, d
 	{
 		if (ch == ' ')
 		{
-			x += monospaced ? spacing : font->GetSpaceWidth() + spacing;
+			x += (monospaced ? spacing : font->GetSpaceWidth() + spacing) * scaleX;
 			continue;
 		}
 		else if (ch == TEXTCOLOR_ESCAPE)
@@ -1590,7 +1590,7 @@ void DBaseStatusBar::DrawString(FFont *font, const FString &cstring, double x, d
 		}
 
 		if (!monospaced) //If we are monospaced lets use the offset
-			x += (c->GetLeftOffset(0) + 1); //ignore x offsets since we adapt to character size
+			x += c->GetLeftOffset(0) * scaleX + 1; //ignore x offsets since we adapt to character size
 
 		double rx, ry, rw, rh;
 		rx = x + drawOffset.X;
@@ -1640,12 +1640,12 @@ void DBaseStatusBar::DrawString(FFont *font, const FString &cstring, double x, d
 			DTA_LegacyRenderStyle, ERenderStyle(style),
 			TAG_DONE);
 
-		dx = monospaced 
-			? spacing
-			: width + spacing - (c->GetLeftOffset(0) + 1);
-
 		// Take text scale into account
-		x += dx * scaleX;
+		dx = monospaced
+			? spacing * scaleX
+			: (double(width) + spacing - c->GetLeftOffset(0)) * scaleX - 1;
+
+		x += dx;
 	}
 }
 
