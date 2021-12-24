@@ -1972,7 +1972,7 @@ int P_TestMobjZ(AActor *actor, bool quick, AActor **pOnmobj)
 {
 	AActor *onmobj = nullptr;
 	if (pOnmobj) *pOnmobj = nullptr;
-	if (actor->flags & MF_NOCLIP)
+	if ((actor->flags & MF_NOCLIP) || (actor->flags2 & MF2_THRUACTORS))
 	{
 		return true;
 	}
@@ -1990,7 +1990,7 @@ int P_TestMobjZ(AActor *actor, bool quick, AActor **pOnmobj)
 		{
 			continue;
 		}
-		if ((actor->flags2 | thing->flags2) & MF2_THRUACTORS)
+		if (thing->flags2 & MF2_THRUACTORS)
 		{
 			continue;
 		}
