@@ -184,7 +184,7 @@ void gl_SetFog(int lightlevel, int rellight, bool fullbright, const FColormap *c
 	}
 	else
 	{
-		if ((level.lightmode == ELightMode::Doom || (level.isSoftwareLighting() && cmap && cmap->BlendFactor > 0)) && fogcolor == 0)
+		if (cmap && (level.lightmode == ELightMode::Doom || (level.isSoftwareLighting() && cmap->BlendFactor > 0)) && fogcolor == 0)
 		{
 			float light = hw_CalcLightLevel(lightlevel, rellight, false, cmap->BlendFactor);
 			gl_SetShaderLight(light, lightlevel);
