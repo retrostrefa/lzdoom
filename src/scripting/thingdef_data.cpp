@@ -830,7 +830,7 @@ void InitThingdef()
 		}
 	);
 
-	auto fontstruct = NewStruct("FFont", nullptr, true);
+	auto fontstruct = NewStruct("Font", nullptr, true);
 	fontstruct->Size = sizeof(FFont);
 	fontstruct->Align = alignof(FFont);
 	NewPointer(fontstruct, false)->InstallHandlers(
